@@ -1,0 +1,48 @@
+>>> from NewsPortal.models import *
+>>> user1 = User.objects.create_user('Anton Lozhkin')
+>>> user2 = User.objects.create_user('Maxim Pushkin')
+>>> user3 = User.objects.create_user('steve_66')
+>>> user4 = User.objects.create_user('rodrigo_awe')
+>>> author1 = Author.objects.create(user=user1)
+>>> author2 = Author.objects.create(user=user2)
+>>> category1 = Category.objects.create(category='Travel')
+>>> category2 = Category.objects.create(category='Art')
+>>> category3 = Category.objects.create(category='Science')
+>>> category4 = Category.objects.create(category='IT')
+>>> post1 = Post.objects.create(post_author=author1, post_type=article, post_title='Аэрофлот» запустит рейсы в популярный турецкий город', post_text='Кр
+упнейший авиаперевозчик России «Аэрофлот» запустит прямые рейсы в Измир. Об этом говорится на сайте авиакомпании')
+>>> post2 = Post.objects.create(post_author=author1, post_type=article, post_title='Найден новый способ охлаждения квантовых компьютеров', post_text='в
+MIT нашли способ охлаждения квантовых компьютеров посредством беспроводной связи')
+>>> post3 = Post.objects.create(post_author=author2, post_type=news, post_title='Нейрозамещение: как искусственный интеллект проявил себя в искусстве',
+post_text='Рассказываем о том, как искусственный интеллект - и прежде всего нейросети - проявил себя на ниве искусства, выступая не только вспомогательн
+ым инструментом кураторов и экспертов, но и полноценным соавтором художников')
+>>> post1.post_categories.add(category1)
+>>> post2.post_categories.add(category3)
+>>> post3.post_categories.add(category2)
+>>> post3.post_categories.add(category4)
+>>> comment1 = Comment.objects.create(post=post1, user=user3, comment_text='wow')
+>>> comment2 = Comment.objects.create(post=post1, user=user4, comment_text='not bad')
+>>> comment3 = Comment.objects.create(post=post2, user=user2, comment_text='it is awful')
+>>> comment4 = Comment.objects.create(post=post3, user=user3, comment_text='amazing')
+>>> post1.like()
+>>> post1.like()
+>>> post2.dislike()
+>>> post3.like()
+>>> post3.like()
+>>> post3.like()
+>>> post3.like()
+>>> post3.like()
+>>> post3.like()
+>>> post3.like()
+>>> author1.update_rating()
+>>> author2.update_rating()
+>>> Author.objects.all().values('user__username', 'user_rating').order_by('-user_rating').first()
+>>> best_post = Post.objects.all().order_by('-post_rating')[0]
+>>> best_post.post_time
+>>> best_post.post_author.user.username
+>>> best_post.post_rating
+>>> best_post.post_title
+>>> best_post.preview()
+>>> Comment.objects.filter(post=best_post).values('comment_time', 'user', 'comment_rating', 'comment_text')
+   author_comments_rating = Comment.objects.filter(user_id=self.user).aggregate(comment_rating=Sum(
+            'comment_rating'))['comment_rating'
